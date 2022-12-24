@@ -1,7 +1,17 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
+
+@app.before_request
+def before_request():
+    print("Before")
+
+@app.after_request
+def after_request(res):
+    print("After")
+    return res
+    
 @app.route('/')
 def index():
     #return "<h1>Test2!</h1>\n"
@@ -31,8 +41,8 @@ def query_string():
     return "Test"
 
 def pagina_no_encontrada(error):
-    return render_template('404.html'), 404
-
+    #return render_template('404.html'), 404
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.add_url_rule('/query_string', view_func=query_string)
